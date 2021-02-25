@@ -1,0 +1,232 @@
+{% url 'pump:home' as pump_home_url %}
+
+<!doctype html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!--       &lt;!&ndash;CSS CUSTOM&ndash;&gt;-->
+      <link rel = "stylesheet" href = "{% static 'styles.css' %}"/>
+
+      <!-- jQuery CSS -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>{% block title %} {% endblock %} </title>
+
+</head>
+
+  <body style="background-image: url(&quot;https://img3.akspic.ru/image/25819-planeta-atmosfera-kosmos-prostranstvo-kosmicheskoe_prostranstvo-2560x1440.jpg&quot;);">
+
+                <div class="container-fluid">
+                    <nav class="nav nav-masthead justify-content-center border-bottom border-primary shadow-sm bg-dark fixed-top">
+
+                        <a class="navbar-brand flex-grow-1" href="{%url 'home'%}">
+                            <img src="https://mai.ru/bitrix/templates/mai15/img/logo-MAI90-border.png" alt="" class="img-responsive" height="40" width="40">
+
+                            TpMAI
+                        </a>
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                                            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon">
+
+                                </span>
+                            </button>
+
+                        <!--div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav ml-auto">
+
+                            </ul>
+                        </div-->
+
+
+                        <li class="nav-item {% if request.path == pump_home_url %} active {% endif %}">
+                          <a class="nav-link" href="{% url 'pump:home'%}">Параметры и геометрия <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Профилирование лопасти</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a class="nav-link" href="#">Кавитационный расчёт</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">Расчет пульсаций давления</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Дополнительно
+                            </a>
+
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="#">Словарь терминов</a>
+                              <a class="dropdown-item" href="#">Документация</a>
+                              <!--a class="dropdown-item" href="#">Чертежи</a-->
+                            <div role="separator" class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Литература</a>
+                          </div>
+
+                        </li>
+
+                           <!--вкладка входа/выхода пользователя-->
+                            <li class="nav-item">
+                                <!--если юзер в системе-->
+                                {%if user.is_authenticated%}
+                                <!--то отображается кнопка выхода-->
+                                <a class="nav-link" href="{% url 'logout'%}">Выйти</a>
+
+                                {%else%}
+                                <!--иначе отображается кнопка входа-->
+                                <a class="nav-link" href="{% url 'login'%}">Войти</a>
+                                {%endif%}
+                            </li>
+                    </nav>
+                </div>
+
+
+                <div class="container my-4">
+                        <div class="row">
+                            <div class="col-md-8 mx-auto">
+                                <!--проверяется наличие сообщений, если они есть, то проходим по ним циклом-->
+                                {%if messages%}
+                                    {%for message in messages%}
+                                    <!--проверяется уровень сообщения, если ERROR, то сообщение красное -->
+                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.ERROR%}
+                                        <div class="alert alert-danger messages">
+
+                                            <span{% if message.tags %} class = "{{message.tags}}" {% endif %}>
+                                                Внимание! {{ message }} <br/>
+
+                                            </span>
+                                        </div>
+                                        <!--иначе сообщение зеленое и без предупреждений -->
+                                        {%else%}
+                                        <div class="alert alert-success messages">
+                                            <span{%if message.tags%} class = '{{message.tags}}'{%endif%}>
+                                                {{ message }} <br/>
+                                            </span>
+                                        </div>
+                                        {%endif%}
+                                    {%endfor%}
+                                {%endif%}
+                            </div>
+                        </div>
+                </div>
+
+                  <!--Код для цвета secondary в  Bootstrap #343a40-->
+                  <div class="container" style="height:1129px">
+                    {% block content %} {% endblock %}
+                  </div>
+
+
+<!--                <div class="fixed-bottom">-->
+<!--                    <div class="container">-->
+<!--                        <footer class="bg-dark text-primary mt-4 border-top border-primary">-->
+<!--                            <div class="container">-->
+<!--                                <div class="row">-->
+<!--                                        <div class="col-md-3"><h4>Credits</h4></div>-->
+<!--                                        <div class="col-md-3"></div>-->
+<!--                                        <div class="col-md-3"></div>-->
+<!--                                        <div class="col-md-3"></div>-->
+<!--                                </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-md-6">-->
+<!--                                            <p>Settlement complex for <a href="https://mai.ru/">MAI</a>, by <a href="https://vk.com/id33817315">@Horneringer</a>.</p>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-md-3 lg">©2019 Brand, Inc.</div>-->
+<!--                                        <div class="col-md-3"></div>-->
+<!--                                        <div class="col-md-3"></div>-->
+<!--                                    </div>-->
+<!--                            </div>-->
+<!--                        </footer>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+
+                <!--модальное окно-->
+                <div class="modal fade" id="modal-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Выбор агрегата</h4>
+                                <button class="close" type="button" data-dismiss="modal">
+                                    &times;
+                                </button>
+
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+
+                                 <a href="{% url 'pump:home'%}">
+                                     <div class="col-md-6">
+                                        <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-1" style="background-image: linear-gradient(to bottom right, #007bff 0%, #343a40 100%);" >
+                                           Насос
+                                        </button>
+                                    </div>
+
+
+                                 </a>
+
+
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-1" style="background-image: linear-gradient(to bottom right, #007bff 0%, #343a40 100%);" >
+                                                Турбина
+                                        </button>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Отмена</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous">
+          </script>
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous">
+
+          </script>
+
+
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous">
+          </script>
+
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">
+
+          </script>
+  </body>
+
+</html>

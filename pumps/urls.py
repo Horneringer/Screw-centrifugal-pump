@@ -14,8 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from .views import home_main
+
+# библиотека для авторизации
+from .views import login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # pump - пространство имён
+    path('pump_data/', include(('pump_data.urls', 'pump'))),
+    path('', home_main, name='home'),
+    # адрес для входа
+    path('login/', login_view, name='login'),
+    # адрес выхода
+    path('logout/', logout_view, name='logout'),
 ]

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Насосы{% endblock %}
+<!-- Список насосов-->
+{% block content %}
+
+<h1 class="display-4 text-primary">Расчет насоса</h1>
+<div class="row mx-auto">
+    <div class="col-md-3">
+            <form style="color:#007bff;" action="" method="post"> {% csrf_token %}
+                    {{form.as_p}}
+                    <br>
+
+                    <button class="btn btn-primary" type="submit" style="background-image: linear-gradient(to bottom right, #007bff 0%, #343a40 100%);">Рассчитать</button>
+
+            </form>
+    </div>
+
+
+</div>
+
+{%endblock%}
